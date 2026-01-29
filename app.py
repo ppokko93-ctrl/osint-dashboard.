@@ -19,24 +19,34 @@ def home():
         Domain: <input name="domain">
         <button type="submit">Run theHarvester</button>
     </form>
+    <form action="/spiderfoot" method="post">
+        Target: <input name="target">
+        <button type="submit">Run SpiderFoot</button>
+    </form>
     '''
 
 @app.route('/sherlock', methods=['POST'])
 def sherlock():
     username = request.form['username']
-    result = subprocess.getoutput(f"python3 sherlock/sherlock.py {username}")
+    result = subprocess.getoutput(f"python3 -m sherlock {username}")
     return f"<pre>{result}</pre>"
 
 @app.route('/holehe', methods=['POST'])
 def holehe():
     email = request.form['email']
-    result = subprocess.getoutput(f"python3 holehe/holehe.py {email}")
+    result = subprocess.getoutput(f"python3 -m holehe {email}")
     return f"<pre>{result}</pre>"
 
 @app.route('/harvester', methods=['POST'])
 def harvester():
     domain = request.form['domain']
-    result = subprocess.getoutput(f"python3 theHarvester/theHarvester.py -d {domain} -b google")
+    result = subprocess.getoutput(f"python3 -m theHarvester -d {domain} -b google")
+    return f"<pre>{result}</pre>"
+
+@app.route('/spiderfoot', methods=['POST'])
+def spiderfoot():
+    target = request.form['target']
+    result = subprocess.getoutput(f"python3 -m spiderfoot -s {target}")
     return f"<pre>{result}</pre>"
 
 if __name__ == "__main__":
